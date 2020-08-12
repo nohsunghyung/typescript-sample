@@ -9,14 +9,12 @@ class NoticeStore {
   }
 
   @observable
-  lists = [];
+  list = [];
 
   @action
-  fetchLists() {
+  fetchList() {
     Api.get("/costs").then(({ data }) => {
-      runInAction(() => {
-        this.lists = data.list;
-      });
+      console.log(data);
     });
   }
 }

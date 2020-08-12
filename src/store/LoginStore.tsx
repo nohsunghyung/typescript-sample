@@ -19,7 +19,7 @@ class LoginStore {
   profile = {};
 
   @observable
-  isLogin = localStorage.getItem("profile") ? true : false;
+  isLogin = false || localStorage.getItem("profile") ? true : false;
 
   @action
   onChangeUserInfo(name: any, value: string): void {
@@ -37,6 +37,7 @@ class LoginStore {
         localStorage.setItem("profile", JSON.stringify(data));
         this.profile = data.admin;
         History.push("/notice");
+        this.isLogin = true;
       })
       .catch((err) => console.log(err));
   }
@@ -45,6 +46,7 @@ class LoginStore {
   handleLogout() {
     Api.get("admin/logout").then((res) => {
       History.push("/");
+      this.isLogin = false;
       localStorage.removeItem("profile");
     });
   }

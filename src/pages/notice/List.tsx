@@ -2,52 +2,20 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import NoticeStore from "store/NoticeStore";
 
-// store에 관련된
-interface Iprops {
+interface Store {
   noticeStore?: NoticeStore;
 }
 
 @inject("noticeStore")
 @observer
-class List extends Component<Iprops> {
+class List extends Component<Store> {
   componentDidMount() {
-    const { noticeStore } = this.props;
-    noticeStore!.fetchLists();
+    const { fetchList } = this.props.noticeStore!;
+    fetchList();
   }
   render() {
-    interface ListKeys {
-      id: number;
-      subject: string;
-      registDatetime: string;
-    }
-    const { lists } = this.props.noticeStore!;
-    console.log(lists);
-    return (
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lists.length
-              ? lists.map((item: ListKeys, index) => {
-                  return (
-                    <tr key={item.id}>
-                      <td>{item.id}</td>
-                      <td>{item.subject}</td>
-                      <td>{item.registDatetime}</td>
-                    </tr>
-                  );
-                })
-              : null}
-          </tbody>
-        </table>
-      </div>
-    );
+    const { list } = this.props.noticeStore!;
+    return <div>일반공지리스트</div>;
   }
 }
 
