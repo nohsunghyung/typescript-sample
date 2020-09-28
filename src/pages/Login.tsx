@@ -25,7 +25,6 @@ class Login extends Component<Iprops> {
   };
 
   render() {
-    console.log(1);
     return (
       <div>
         <form onSubmit={this.onSubmitLogin}>

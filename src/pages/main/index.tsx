@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 class MainPage extends Component {
   render() {
-    return <div></div>;
+    console.log(this.props);
+    return <div>메인</div>;
   }
 }
 

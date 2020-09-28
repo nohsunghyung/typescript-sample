@@ -9,23 +9,29 @@ class LoginStore {
     this.rootStore = rootStore;
   }
 
+  // id
   @observable
   aid = null;
 
+  // password
   @observable
   password = null;
 
+  // 프로필정보
   @observable
   profile = {};
 
+  // 로그인체크
   @observable
   isLogin = false || localStorage.getItem("profile") ? true : false;
 
+  // input값 가져오기
   @action
   onChangeUserInfo(name: any, value: string): void {
     this[name] = value;
   }
 
+  // 로그인
   @action
   onSubmitLogin() {
     const apiParams = {
@@ -42,6 +48,7 @@ class LoginStore {
       .catch((err) => console.log(err));
   }
 
+  // 로그아웃
   @action
   handleLogout() {
     Api.get("admin/logout").then((res) => {

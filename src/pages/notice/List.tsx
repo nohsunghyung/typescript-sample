@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import NoticeStore from "store/NoticeStore";
 
-interface Store {
+interface Istore {
   noticeStore?: NoticeStore;
 }
 
 @inject("noticeStore")
 @observer
-class List extends Component<Store> {
+class List extends Component<Istore> {
   componentDidMount() {
     const { fetchList } = this.props.noticeStore!;
     fetchList();
