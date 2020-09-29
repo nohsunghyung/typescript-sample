@@ -5,7 +5,7 @@ import { ContentsWrapper } from "./styled/LayoutStyled";
 import Login from "pages/Login";
 import Header from "./components/Header";
 import ErrorPage from "./pages/ErrorPage";
-import routes from "routes";
+import Routes from "routes";
 import { observer, inject } from "mobx-react";
 import LoginStore from "./store/LoginStore";
 
@@ -20,7 +20,6 @@ class App extends Component<Istore> {
   render() {
     const { loginStore } = this.props;
     const isLogin = loginStore!.isLogin;
-    console.log(isLogin);
     return (
       <Fragment>
         <Switch>
@@ -37,8 +36,13 @@ class App extends Component<Istore> {
               }
             }}
           ></Route>
-          {routes.map((route, index) => {
-            const Pages = route.component;
+          {Routes.map((route, index) => {
+            let Pages: any = null;
+            if (route.component) {
+              Pages = route.component;
+            } else {
+              Pages = route.subMenu[0].component;
+            }
             return (
               <Route
                 exact
@@ -50,7 +54,16 @@ class App extends Component<Istore> {
                     return <Redirect to="/login" />;
                   } else {
                     // 로그인 되어있을경우 메인페이지로
-                    return <Pages {...props} />;
+                    return (
+                      <Fragment>
+                        <div className="contents">
+                          <SideBar />
+                          <ContentsWrapper>
+                            <Pages {...props} />
+                          </ContentsWrapper>
+                        </div>
+                      </Fragment>
+                    );
                   }
                 }}
                 key={index}
