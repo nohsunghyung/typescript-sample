@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import NoticeStore from "store/NoticeStore";
 
+// store 초기 설정
 interface Istore {
   noticeStore?: NoticeStore;
 }
@@ -15,7 +16,7 @@ class List extends Component<Istore> {
   }
   render() {
     const { list } = this.props.noticeStore!;
-    return <div>일반공지리스트</div>;
+    return <div>일반공지</div>;
   }
 }
 

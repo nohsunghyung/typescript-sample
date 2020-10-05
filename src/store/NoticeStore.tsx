@@ -14,7 +14,7 @@ class NoticeStore {
   @action
   fetchList() {
     Api.get("/costs").then(({ data }) => {
-      console.log(data);
+      // console.log(data);
     });
   }
 }

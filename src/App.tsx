@@ -20,6 +20,47 @@ class App extends Component<Istore> {
   render() {
     const { loginStore } = this.props;
     const isLogin = loginStore!.isLogin;
+    let routeComponent: any = [];
+    Routes.forEach((route, index) => {
+      if (route.path) {
+        // 1뎁스에 path가 있을경우
+        routeComponent.push(routeComponets(route, index));
+      } else {
+        // 2뎁스 이상
+        route.subMenu!.forEach((menu) => {
+          routeComponent.push(routeComponets(menu, index));
+        });
+      }
+    });
+
+    function routeComponets(route: any, index: number) {
+      return (
+        <Route
+          path={route.path}
+          key={index}
+          children={(props) => {
+            if (!isLogin) {
+              // 로그인 안되어있을경우 로그인페이지로
+              alert("로그인이 필요합니다.");
+              return <Redirect to="/login" />;
+            } else {
+              // 로그인 되어있을경우 해당 page
+              return (
+                <Fragment>
+                  <div className="contents">
+                    <SideBar />
+                    <ContentsWrapper>
+                      <route.component {...props} />
+                    </ContentsWrapper>
+                  </div>
+                </Fragment>
+              );
+            }
+          }}
+        ></Route>
+      );
+    }
+
     return (
       <Fragment>
         <Switch>
@@ -36,40 +77,7 @@ class App extends Component<Istore> {
               }
             }}
           ></Route>
-          {Routes.map((route, index) => {
-            let Pages: any = null;
-            if (route.component) {
-              Pages = route.component;
-            } else {
-              Pages = route.subMenu[0].component;
-            }
-            return (
-              <Route
-                exact
-                path={route.path}
-                children={(props) => {
-                  if (!isLogin) {
-                    // 로그인 안되어있을경우 로그인페이지로
-                    alert("로그인이 필요합니다.");
-                    return <Redirect to="/login" />;
-                  } else {
-                    // 로그인 되어있을경우 메인페이지로
-                    return (
-                      <Fragment>
-                        <div className="contents">
-                          <SideBar />
-                          <ContentsWrapper>
-                            <Pages {...props} />
-                          </ContentsWrapper>
-                        </div>
-                      </Fragment>
-                    );
-                  }
-                }}
-                key={index}
-              ></Route>
-            );
-          })}
+          {routeComponent}
           <Route path="*" exact component={ErrorPage} />
         </Switch>
       </Fragment>

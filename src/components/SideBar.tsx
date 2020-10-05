@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 
 // state 타입 설정
 interface Istate {
-  isMenuActive?: boolean;
+  activeIndex?: any;
 }
 
 // props 타입 설정
@@ -15,27 +15,32 @@ interface Iprops {}
 // history,location,match 사용을 위해 RouteComponentProps 사용
 class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
   state: Istate = {
-    isMenuActive: false,
+    activeIndex: null,
   };
   // 메뉴 토글 핸들러
-  handleMenuToggle = () => {
+  handleMenuToggle = (index: number) => {
     this.setState({
-      isMenuActive: !this.state.isMenuActive,
+      activeIndex: index,
     });
   };
   componentDidMount() {
+    console.log(2222);
     const pathName = this.props.location.pathname;
+    // const route = Routes.filter((menu) => {});
   }
   render() {
     return (
       <SideMenu>
         <ul>
-          {Routes.map((menu) => {
+          {Routes.map((menu, index) => {
             return (
-              <MenuList key={menu.id}>
+              <MenuList
+                key={menu.id}
+                className={this.state.activeIndex === menu.id ? "active" : ""}
+              >
                 {/* 1뎁스 메뉴에 path가 있을경우 */}
                 {menu.path ? (
-                  <NavLink to={menu.path} className="depth01">
+                  <NavLink to={menu.path} className="depth depth01">
                     {menu.name}
                   </NavLink>
                 ) : (
@@ -43,18 +48,12 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
                     {/* 1뎁스 메뉴에 path가 없을경우 */}
                     <button
                       type="button"
-                      className={`depth01 ${
-                        this.state.isMenuActive ? `active` : ``
-                      }`}
-                      onClick={this.handleMenuToggle}
+                      className={"depth depth01"}
+                      onClick={() => this.handleMenuToggle(index)}
                     >
                       {menu.name}
                     </button>
-                    <ul
-                      className={`sub-menu ${
-                        this.state.isMenuActive ? `active` : ``
-                      }`}
-                    >
+                    <ul className={"sub-menu"}>
                       {menu.subMenu?.map((submenu) => {
                         return (
                           <li key={submenu.id}>
@@ -83,6 +82,14 @@ const SideMenu = styled.aside`
 `;
 
 const MenuList = styled.li`
+  &.active {
+    > .depth {
+      color: red;
+    }
+    > .sub-menu {
+      display: block;
+    }
+  }
   .depth01 {
     display: block;
     padding: 10px 10px 10px 20px;

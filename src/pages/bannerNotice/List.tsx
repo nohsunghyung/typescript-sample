@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
-export class List extends Component {
+class List extends Component {
+  componentDidMount() {}
   render() {
-    return <div>배너공지 리스트</div>;
+    return <div>배너리스트2</div>;
   }
 }
 
