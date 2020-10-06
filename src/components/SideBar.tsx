@@ -11,7 +11,13 @@ interface Istate {
 }
 
 // props 타입 설정
-interface Iprops {}
+interface Iprops {
+  // id?: number;
+  // path?: string;
+  // component?: any;
+  // name?: string;
+  // parent?: string;
+}
 
 // history,location,match 사용을 위해 RouteComponentProps 사용
 class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
@@ -39,7 +45,7 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
     return (
       <SideMenu>
         <ul>
-          {Routes.map((menu, index) => {
+          {Routes.map((menu: any, index: number) => {
             return (
               <MenuList
                 key={menu.id}
@@ -67,7 +73,7 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
                       {menu.name}
                     </button>
                     <ul className={"sub-menu"}>
-                      {menu.subMenu?.map((submenu, index) => {
+                      {menu.subMenu?.map((submenu: any, index: number) => {
                         return (
                           <li key={index}>
                             <NavLink

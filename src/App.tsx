@@ -27,7 +27,7 @@ class App extends Component<Istore> {
         routeComponent.push(routeComponets(route, index));
       } else {
         // 2뎁스 이상
-        route.subMenu!.forEach((menu) => {
+        route.subMenu!.forEach((menu: object) => {
           routeComponent.push(routeComponets(menu, index));
         });
       }
