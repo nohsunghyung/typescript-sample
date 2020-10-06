@@ -7,6 +7,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 // state 타입 설정
 interface Istate {
   activeIndex?: any;
+  isActive?: boolean;
 }
 
 // props 타입 설정
@@ -14,21 +15,27 @@ interface Iprops {}
 
 // history,location,match 사용을 위해 RouteComponentProps 사용
 class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
-  state: Istate = {
-    activeIndex: null,
-  };
+  constructor(props: Iprops & RouteComponentProps) {
+    // props 옆에 interface props 지정
+    super(props);
+    // 메뉴 id 지정
+    const replaceHash = this.props.location.hash.replace("#", "");
+    const menuId = Number(replaceHash);
+
+    this.state = {
+      activeIndex: menuId || 0,
+      isActive: false,
+    };
+  }
   // 메뉴 토글 핸들러
   handleMenuToggle = (index: number) => {
     this.setState({
       activeIndex: index,
     });
   };
-  componentDidMount() {
-    console.log(2222);
-    const pathName = this.props.location.pathname;
-    // const route = Routes.filter((menu) => {});
-  }
+  componentDidMount() {}
   render() {
+    const { activeIndex } = this.state;
     return (
       <SideMenu>
         <ul>
@@ -36,11 +43,17 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
             return (
               <MenuList
                 key={menu.id}
-                className={this.state.activeIndex === menu.id ? "active" : ""}
+                className={activeIndex === menu.id ? "active" : ""}
               >
                 {/* 1뎁스 메뉴에 path가 있을경우 */}
                 {menu.path ? (
-                  <NavLink to={menu.path} className="depth depth01">
+                  <NavLink
+                    to={{
+                      pathname: `${menu.path}`,
+                      hash: `${menu.id}`,
+                    }}
+                    className="depth depth01"
+                  >
                     {menu.name}
                   </NavLink>
                 ) : (
@@ -54,10 +67,17 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
                       {menu.name}
                     </button>
                     <ul className={"sub-menu"}>
-                      {menu.subMenu?.map((submenu) => {
+                      {menu.subMenu?.map((submenu, index) => {
                         return (
-                          <li key={submenu.id}>
-                            <NavLink to={submenu.path} className={`depth02`}>
+                          <li key={index}>
+                            <NavLink
+                              activeClassName={"active"}
+                              to={{
+                                pathname: `${submenu.path}`,
+                                hash: `${menu.id}`,
+                              }}
+                              className={`depth02`}
+                            >
                               {submenu.name}
                             </NavLink>
                           </li>
@@ -84,7 +104,7 @@ const SideMenu = styled.aside`
 const MenuList = styled.li`
   &.active {
     > .depth {
-      color: red;
+      color: pink;
     }
     > .sub-menu {
       display: block;
@@ -97,7 +117,7 @@ const MenuList = styled.li`
     background: none;
     font-size: 14px;
     &.active {
-      color: red;
+      color: pink;
     }
   }
   .sub-menu {
@@ -107,7 +127,7 @@ const MenuList = styled.li`
     }
   }
   .depth02.active {
-    color: red;
+    color: pink;
   }
 `;
 

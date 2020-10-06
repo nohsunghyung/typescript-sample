@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import { observer, inject } from "mobx-react";
+import NoticeStore from "store/NoticeStore";
 
-class List extends Component {
-  componentDidMount() {}
+// store 초기 설정
+interface Istore {
+  noticeStore?: NoticeStore;
+}
+
+@inject("noticeStore")
+@observer
+class List extends Component<Istore> {
+  componentDidMount() {
+    const { fetchList } = this.props.noticeStore!;
+    fetchList();
+  }
   render() {
-    return <div>배너리스트2</div>;
+    const { list } = this.props.noticeStore!;
+    return <div>배너공지</div>;
   }
 }
 

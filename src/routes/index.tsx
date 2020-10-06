@@ -50,6 +50,12 @@ const routes = [
       },
     ],
   },
+  {
+    id: 3,
+    path: "/feee",
+    component: MainPage,
+    name: "aaas",
+  },
 ];
 
 export default routes;
