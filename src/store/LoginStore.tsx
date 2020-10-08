@@ -3,6 +3,7 @@ import RootStore from "./RootStore";
 import History from "../utils/history";
 import Api from "../utils/api";
 
+// 로그인 관련 store
 class LoginStore {
   rootStore: RootStore;
   constructor(rootStore: RootStore) {
