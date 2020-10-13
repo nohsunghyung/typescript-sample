@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import ModalStore from 'store/ModalStore';
+import ModalType from 'config/ModalType';
+import DoubleModal from '../DoubleModal';
 
+// props 셋팅
 interface Iprops {
   // 상위컴포넌트에서 내려주는 props가 없어도 에러가 나지않게 ? 처리
   modalData?: {
@@ -15,6 +18,7 @@ interface Iprops {
   };
 }
 
+// store 셋팅
 interface StoreProps {
   modalStore?: ModalStore; // 상위컴포넌트에서 내려주는 props가 없어도 에러가 나지않게 ? 처리
 }
@@ -34,6 +38,12 @@ class SamplePopup extends Component<Iprops & StoreProps> {
       modalStore!.handleCloseModal();
     }
   };
+  openModal = () => {
+    const { modalStore } = this.props;
+    modalStore!.handleOpenModal(ModalType.DOUBLE_POPUP, {
+      title: '이중팝업'
+    });
+  };
   render() {
     const { title, body, completeLabel, cancelLabel } = this.props.modalData!;
     return (
@@ -45,6 +55,9 @@ class SamplePopup extends Component<Iprops & StoreProps> {
           <button onClick={this.handleComplete}>
             {completeLabel || '완료'}
           </button>
+        </div>
+        <div>
+          <button onClick={this.openModal}>이중팝업열기</button>
         </div>
       </div>
     );

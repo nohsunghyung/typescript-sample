@@ -3,7 +3,9 @@ import Modal from 'react-modal';
 import ModalStore from 'store/ModalStore';
 import { inject, observer } from 'mobx-react';
 import ModalType from 'config/ModalType';
-import ConfirmModal from './ConfirmModal';
+import ConfirmModal from './common/ConfirmModal';
+import FullModal from './common/FullModal';
+import DoubleModal from './DoubleModal';
 
 // store 셋팅
 interface StoreProps {
@@ -23,7 +25,13 @@ class ModalContainer extends Component<StoreProps> {
         modalComponent = <ConfirmModal modalData={modalData} />;
         modalClassName = 'confirm-popup';
         break;
-
+      case ModalType.FULL_POPUP:
+        modalComponent = <FullModal modalData={modalData} />;
+        modalClassName = 'full-popup';
+        break;
+      case ModalType.DOUBLE_POPUP:
+        modalComponent = <DoubleModal modalData={modalData} />;
+        break;
       default:
         break;
     }

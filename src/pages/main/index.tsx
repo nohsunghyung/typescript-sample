@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import ModalStore from 'store/ModalStore';
-import ModalContainer from 'components/modal/ModalContainer';
 import ModalType from 'config/ModalType';
 
 // props 셋팅
@@ -22,13 +21,7 @@ class MainPage extends Component<Iprops & StoreProps> {
     const { modalStore } = this.props;
     modalStore!.handleOpenModal(ModalType.CONFIRM_POPUP, {
       title: 'confirm 팝업',
-      body: '내용입니다',
-      completeLabel: '확인이요',
-      cancelLabel: '닫기',
-      handleCancel() {
-        console.log('닫기 버튼');
-        modalStore!.handleCloseModal();
-      }
+      body: '내용입니다'
     });
   };
   componentDidMount() {}
@@ -38,8 +31,6 @@ class MainPage extends Component<Iprops & StoreProps> {
         <button type="button" onClick={this.openModal}>
           confirm 팝업
         </button>
-
-        <ModalContainer />
       </div>
     );
   }
