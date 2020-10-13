@@ -9,6 +9,7 @@ import Routes from 'routes';
 import { observer, inject } from 'mobx-react';
 import LoginStore from './store/LoginStore';
 import ModalContainer from './components/modal/ModalContainer';
+import LodingBar from './components/LodingBar';
 
 // 로그인 store
 interface Istore {
@@ -82,6 +83,7 @@ class App extends Component<Istore> {
           <Route path="*" exact component={ErrorPage} />
         </Switch>
         <ModalContainer />
+        <LodingBar />
       </Fragment>
     );
   }

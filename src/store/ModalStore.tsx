@@ -13,10 +13,10 @@ class ModalStore {
   @observable isModalOpen: boolean = false;
 
   // 모달 type
-  @observable modalType = '';
+  @observable modalType: string = '';
 
   // 모달 data
-  @observable modalData = {};
+  @observable modalData: any = {};
 
   // 모달 관리
   @observable modalHistory: any[] = [];
@@ -40,9 +40,9 @@ class ModalStore {
       this.modalType = '';
       this.modalHistory = [];
     } else {
-      const modalLength = this.modalHistory.length;
-      this.modalType = this.modalHistory[modalLength - 2].modalType;
-      this.modalHistory.splice(modalLength - 1, 1);
+      this.modalData = this.modalHistory[this.modalHistory.length - 2];
+      this.modalType = this.modalData.modalType;
+      this.modalHistory.splice(-1, 1);
     }
   }
 }

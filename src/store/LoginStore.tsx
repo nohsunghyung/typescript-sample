@@ -1,7 +1,7 @@
-import { observable, action, runInAction, computed } from "mobx";
-import RootStore from "./RootStore";
-import History from "../utils/history";
-import Api from "../utils/api";
+import { observable, action } from 'mobx';
+import RootStore from './RootStore';
+import History from '../utils/history';
+import Api from '../utils/api';
 
 // 로그인 관련 store
 class LoginStore {
@@ -24,7 +24,7 @@ class LoginStore {
 
   // 로그인체크
   @observable
-  isLogin = false || localStorage.getItem("profile") ? true : false;
+  isLogin = false || localStorage.getItem('profile') ? true : false;
 
   // input값 가져오기
   @action
@@ -37,13 +37,13 @@ class LoginStore {
   onSubmitLogin() {
     const apiParams = {
       aid: this.aid,
-      password: this.password,
+      password: this.password
     };
-    Api.post("admin/login", apiParams)
+    Api.post('admin/login', apiParams)
       .then(({ data }) => {
-        localStorage.setItem("profile", JSON.stringify(data));
+        localStorage.setItem('profile', JSON.stringify(data));
         this.profile = data.admin;
-        History.push("/notice");
+        History.push('/notice');
         this.isLogin = true;
       })
       .catch((err) => console.log(err));
@@ -52,10 +52,10 @@ class LoginStore {
   // 로그아웃
   @action
   handleLogout() {
-    Api.get("admin/logout").then((res) => {
-      History.push("/");
+    Api.get('admin/logout').then((res) => {
+      History.push('/');
       this.isLogin = false;
-      localStorage.removeItem("profile");
+      localStorage.removeItem('profile');
     });
   }
 }
