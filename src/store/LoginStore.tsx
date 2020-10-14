@@ -1,7 +1,8 @@
 import { observable, action } from 'mobx';
 import RootStore from './RootStore';
-import History from '../utils/history';
-import Api from '../utils/api';
+import History from 'utils/History';
+import Api from 'utils/Api';
+import { setCookie, getCookie, eraseCookie } from 'utils/Cookie';
 
 // 로그인 관련 store
 class LoginStore {
@@ -24,7 +25,7 @@ class LoginStore {
 
   // 로그인체크
   @observable
-  isLogin = false || localStorage.getItem('profile') ? true : false;
+  isLogin = false || getCookie('userData') ? true : false;
 
   // input값 가져오기
   @action
@@ -41,10 +42,16 @@ class LoginStore {
     };
     Api.post('admin/login', apiParams)
       .then(({ data }) => {
-        localStorage.setItem('profile', JSON.stringify(data));
+        const trimData = JSON.stringify(data);
+        setCookie('userData', trimData, 1);
         this.profile = data.admin;
         History.push('/notice');
         this.isLogin = true;
+
+        // localStorage.setItem('profile', JSON.stringify(data));
+        // this.profile = data.admin;
+        // History.push('/notice');
+        // this.isLogin = true;
       })
       .catch((err) => console.log(err));
   }

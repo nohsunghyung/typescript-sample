@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import RootStore from './RootStore';
-import Api from '../utils/api';
+import Api from 'utils/Api';
 
 class NoticeStore {
   rootStore: RootStore;
@@ -14,7 +14,7 @@ class NoticeStore {
   @action
   fetchList() {
     Api.get('/costs').then((response) => {
-      console.log(response);
+      // console.log(response);
     });
   }
 }

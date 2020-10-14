@@ -1,13 +1,12 @@
-import React, { Fragment, Component } from "react";
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
-import Routes from "../routes/index";
-import { withRouter, RouteComponentProps } from "react-router";
+import React, { Fragment, Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import MenuLists from 'utils/MenuLists';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 // state 타입 설정
 interface Istate {
-  activeIndex?: any;
-  isActive?: boolean;
+  activeMenuName: string;
 }
 
 // props 타입 설정
@@ -19,46 +18,69 @@ interface Iprops {
   // parent?: string;
 }
 
+// 메뉴 활성화 함수
+function activeMenuHandler(pathname: string) {
+  let activeMenuName = '';
+  if (!activeMenuName) {
+    MenuLists.forEach((menu: any) => {
+      let subMenus = menu.subMenus;
+      if (subMenus) {
+        // 서브메뉴가 있을경우
+        subMenus.forEach((submenu: any) => {
+          if (submenu.path === pathname) {
+            // 서브메뉴의 path와 location path가 일치할경우
+            activeMenuName = menu.name;
+          }
+        });
+      } else {
+        activeMenuName = menu.name;
+      }
+    });
+  }
+  return activeMenuName;
+}
+
 // history,location,match 사용을 위해 RouteComponentProps 사용
 class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
   constructor(props: Iprops & RouteComponentProps) {
     // props 옆에 interface props 지정
     super(props);
-    // 메뉴 id 지정
-    const replaceHash = this.props.location.hash.replace("#", "");
-    const menuId = Number(replaceHash);
-
+    // 현재 pathname
+    const pathName = this.props.location.pathname;
     this.state = {
-      activeIndex: menuId || 0,
-      isActive: false,
+      activeMenuName: activeMenuHandler(pathName) || ''
     };
   }
+
   // 메뉴 토글 핸들러
-  handleMenuToggle = (index: number) => {
+  handleMenuToggle = (menuName: string) => {
+    // 현재 메뉴와 클릭한 메뉴가 같을경우
+    if (this.state.activeMenuName === menuName) menuName = '';
     this.setState({
-      activeIndex: index,
+      activeMenuName: menuName
     });
   };
+
   componentDidMount() {}
   render() {
-    const { activeIndex } = this.state;
+    const { activeMenuName } = this.state;
     return (
       <SideMenu>
         <ul>
-          {Routes.map((menu: any, index: number) => {
+          {MenuLists.map((menu: any, index: number) => {
             return (
               <MenuList
-                key={menu.id}
-                className={activeIndex === menu.id ? "active" : ""}
+                key={index}
+                className={activeMenuName === menu.name ? 'active' : ''}
               >
                 {/* 1뎁스 메뉴에 path가 있을경우 */}
                 {menu.path ? (
                   <NavLink
                     to={{
-                      pathname: `${menu.path}`,
-                      hash: `${menu.id}`,
+                      pathname: `${menu.path}`
                     }}
-                    className="depth depth01"
+                    className={'depth depth01'}
+                    replace
                   >
                     {menu.name}
                   </NavLink>
@@ -67,22 +89,21 @@ class SideBar extends Component<Iprops & RouteComponentProps, Istate> {
                     {/* 1뎁스 메뉴에 path가 없을경우 */}
                     <button
                       type="button"
-                      className={"depth depth01"}
-                      onClick={() => this.handleMenuToggle(index)}
+                      className={'depth depth01'}
+                      onClick={() => this.handleMenuToggle(menu.name)}
                     >
                       {menu.name}
                     </button>
-                    <ul className={"sub-menu"}>
-                      {menu.subMenu?.map((submenu: any, index: number) => {
+                    <ul className={'sub-menu'}>
+                      {menu.subMenus?.map((submenu: any, index: number) => {
                         return (
                           <li key={index}>
                             <NavLink
-                              activeClassName={"active"}
                               to={{
-                                pathname: `${submenu.path}`,
-                                hash: `${menu.id}`,
+                                pathname: `${submenu.path}`
                               }}
                               className={`depth02`}
+                              replace
                             >
                               {submenu.name}
                             </NavLink>

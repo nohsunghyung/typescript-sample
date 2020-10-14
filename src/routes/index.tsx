@@ -1,61 +1,29 @@
-import { NoticeList } from "../pages/notice";
-import { BannerNoticeList } from "../pages/bannerNotice";
-import MainPage from "../pages/main";
+import { NoticeList } from '../pages/notice';
+import { BannerNoticeList } from '../pages/bannerNotice';
+import MainPage from '../pages/main';
 
 // route와 관련된 데이터
 const routes = [
   {
-    id: 0,
-    path: "/main",
-    component: MainPage,
-    name: "메인",
+    name: '메인',
+    path: '/main',
+    component: MainPage
   },
   {
-    id: 1,
-    name: "공지사항",
-    subMenu: [
+    name: '공지사항',
+    subMenus: [
       {
-        id: 0,
-        path: "/notice",
+        path: '/notice',
         component: NoticeList,
-        name: "일반공지",
-        parent: "공지사항",
+        name: '일반공지'
       },
       {
-        id: 1,
-        path: "/banner",
+        path: '/banner',
         component: BannerNoticeList,
-        name: "배너공지",
-        parent: "공지사항",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "가스요금",
-    subMenu: [
-      {
-        id: 0,
-        path: "/ff",
-        component: MainPage,
-        name: "일반가스",
-        parent: "가스요금",
-      },
-      {
-        id: 1,
-        path: "/aa",
-        component: MainPage,
-        name: "배너가스",
-        parent: "가스요금",
-      },
-    ],
-  },
-  {
-    id: 3,
-    path: "/feee",
-    component: MainPage,
-    name: "aaas",
-  },
+        name: '배너공지'
+      }
+    ]
+  }
 ];
 
 export default routes;
